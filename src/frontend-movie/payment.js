@@ -9,7 +9,7 @@ export default function Payment() {
 
         try {
 
-            const response = await fetch("http://localhost:4000/create-order", {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/create-order`, {
 
                 method: "POST",
 

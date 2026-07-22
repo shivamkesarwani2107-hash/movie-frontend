@@ -38,7 +38,7 @@ export default function Booking() {
     }
 
 
-    const response = await fetch("http://localhost:4000/booking", {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/booking`, {
       method: "POST",
 
       headers: {
@@ -76,7 +76,7 @@ export default function Booking() {
 
       alert(data.message);
 
-      const movieResponse = await fetch("http://localhost:4000/movie");
+      const movieResponse = await fetch(`${process.env.REACT_APP_API_URL}/movie`);
       const movieData = await movieResponse.json();
 
       const foundMovie = movieData.find(
@@ -102,7 +102,7 @@ export default function Booking() {
   }
 
   useEffect(() => {
-    fetch("http://localhost:4000/movie")
+    fetch(`${process.env.REACT_APP_API_URL}/movie`)
       .then((res) => res.json())
       .then((data) => setMovies(data))
       .catch((err) => console.log(err));
@@ -117,7 +117,7 @@ export default function Booking() {
   useEffect(() => {
     if (!movieName) return;
 
-    fetch("http://localhost:4000/movie")
+    fetch(`${process.env.REACT_APP_API_URL}/movie`)
       .then((res) => res.json())
       .then((data) => {
         const foundMovie = data.find(

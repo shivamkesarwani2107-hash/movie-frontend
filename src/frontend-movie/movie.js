@@ -5,7 +5,7 @@ export default function Movie() {
   const navigate = useNavigate();
 
   const getMovies = async () => {
-    const response = await fetch("http://localhost:4000/movie");
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/movie`);
 
     if (!response.ok) {
       throw new Error("Failed to fetch movies");
