@@ -20,9 +20,8 @@ function App() {
         <Route
           path="/movie"
           element={
-            <ProtectedRoute>
+            
               <Movie />
-            </ProtectedRoute>
           }
         />
 
