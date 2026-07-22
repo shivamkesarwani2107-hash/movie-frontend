@@ -75,7 +75,7 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 
             <div className="bg-white rounded-xl shadow-lg p-8 text-center hover:-translate-y-2 transition"
-            onClick={()=>navigate('movie')}
+              onClick={() => navigate('movie')}
             >
 
               <div className="text-5xl mb-4">🎬</div>
@@ -96,7 +96,7 @@ export default function Home() {
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-8 text-center hover:-translate-y-2 transition"
-            onClick={()=>navigate('booking')}
+              onClick={() => navigate('booking')}
             >
 
               <div className="text-5xl mb-4">⚡</div>
@@ -115,26 +115,8 @@ export default function Home() {
 
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-8 text-center hover:-translate-y-2 transition">
-
-              <div className="text-5xl mb-4">🔒</div>
-
-              <h3 className="font-bold text-xl">
-
-                Secure Payments
-
-              </h3>
-
-              <p className="text-gray-500 mt-3">
-
-                Safe payment experience with Razorpay.
-
-              </p>
-
-            </div>
-
             <div className="bg-white rounded-xl shadow-lg p-8 text-center hover:-translate-y-2 transition"
-            onClick={()=>navigate('profile')}
+              onClick={() => navigate('profile')}
             >
 
               <div className="text-5xl mb-4">📧</div>
@@ -149,6 +131,22 @@ export default function Home() {
 
                 Get instant booking confirmation by email.
 
+              </p>
+
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-8 text-center hover:-translate-y-2 transition"
+              onClick={() => navigate('help')}
+            >
+
+              <div className="text-5xl mb-4">🎧</div>
+
+              <h3 className="font-bold text-xl">
+                Help & Support
+              </h3>
+
+              <p className="text-gray-500 mt-3">
+                Get quick assistance for bookings, payments, and account-related queries anytime.
               </p>
 
             </div>
