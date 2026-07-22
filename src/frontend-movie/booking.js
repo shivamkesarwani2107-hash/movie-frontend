@@ -14,92 +14,81 @@ export default function Booking() {
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const today = new Date().toISOString().split("T")[0];
 
   const handleBooking = async () => {
 
-    if (
-      !movieName ||
-      !theatre ||
-      !date ||
-      !time ||
-      !seats ||
-      !payment
-    ) {
+    if (!movieName || !theatre || !date || !time || !seats || !payment) {
       alert("All fields are required");
       return;
     }
-
 
     if (date < today) {
       alert("Past date booking is not allowed");
       return;
     }
 
+    setLoading(true);
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/booking`, {
-      method: "POST",
+    try {
 
-      headers: {
-        "Content-Type": "application/json",
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/booking`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({
+          movieName,
+          theatre,
+          date,
+          time,
+          seats,
+          payment
+        })
+      });
 
-        Authorization:
+      const data = await response.json();
 
-          `Bearer ${localStorage.getItem("token")}`
-      },
+      if (response.ok) {
 
-      body: JSON.stringify({
+        localStorage.setItem("booking", JSON.stringify(data.booking));
 
-        movieName,
-        theatre,
-        date,
-        time,
-        seats,
-        payment
+        const movieResponse = await fetch(`${process.env.REACT_APP_API_URL}/movie`);
+        const movieData = await movieResponse.json();
 
-      })
+        const foundMovie = movieData.find(
+          (m) => m.name === movieName
+        );
 
-    });
+        setSelectedMovie(foundMovie);
 
+        setMovieName("");
+        setTheatre("");
+        setDate("");
+        setTime("");
+        setSeats("");
+        setPayment("");
 
+        navigate("/payment");
 
+      } else {
 
-    const data = await response.json();
+        alert(data.message);
+        setLoading(false);
 
-    if (response.ok) {
+      }
 
-      localStorage.setItem(
-        "booking",
-        JSON.stringify(data.booking)
-      );
+    } catch (err) {
 
-      alert(data.message);
-
-      const movieResponse = await fetch(`${process.env.REACT_APP_API_URL}/movie`);
-      const movieData = await movieResponse.json();
-
-      const foundMovie = movieData.find(
-        (m) => m.name === movieName
-      );
-
-      setSelectedMovie(foundMovie);
-
-      setMovieName("");
-      setTheatre("");
-      setDate("");
-      setTime("");
-      setSeats("");
-      setPayment("");
-
-      navigate("/payment");
-
-    } else {
-
-      alert(data.message);
+      alert("Server Error");
+      setLoading(false);
 
     }
-  }
+
+  };
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/movie`)
@@ -284,20 +273,28 @@ export default function Booking() {
           </div>
 
           <button
-            disabled={availableSeats === null || availableSeats === 0}
+            disabled={loading || availableSeats === null || availableSeats === 0}
             onClick={handleBooking}
-            className={`w-full mt-6 py-3 rounded-md text-white ${availableSeats === null || availableSeats === 0
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-red-500 hover:bg-red-600"
+            className={`w-full mt-6 py-3 rounded-md text-white flex items-center justify-center gap-2 ${loading
+                ? "bg-red-500 cursor-wait"
+                : availableSeats === null || availableSeats === 0
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-red-500 hover:bg-red-600"
               }`}
           >
-            {availableSeats === null
-              ? "⏰ Select Show Time"
-              : availableSeats === 0
-                ? "🚫 House Full"
-                : "🎟️ Confirm Booking"}
+            {loading ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Processing...
+              </>
+            ) : availableSeats === null ? (
+              "⏰ Select Show Time"
+            ) : availableSeats === 0 ? (
+              "🚫 House Full"
+            ) : (
+              "🎟️ Confirm Booking"
+            )}
           </button>
-
         </div>
 
       </div>
