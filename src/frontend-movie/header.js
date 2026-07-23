@@ -186,6 +186,13 @@ function Header() {
                         ❓ Help
                     </button>
 
+                    <button
+                    onClick={()=>navigate('admin')}
+                     className="block w-full text-left"
+                    >
+                       👤 Admin
+                    </button>
+
                     {token ? (
 
                         <button
