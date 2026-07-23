@@ -8,8 +8,11 @@ import Help from "./frontend-movie/help.js";
 import Ticket from "./frontend-movie/ticket.js";
 import Payment from "./frontend-movie/payment.js";
 import Profile from "./frontend-movie/profile.js";
-import Admin from "./frontend-movie/admin.js";
 import ProtectedRoute from "./frontend-movie/ProtectedRoute";
+import Admin from "./frontend-movie/admin.js";
+import AddMovie from "./frontend-movie/addMovie.js";
+import ViewBooking from "./frontend-movie/viewBooking.js";
+import ViewUser from "./frontend-movie/viewUser.js";
 function App() {
   return (
     <BrowserRouter>
@@ -22,8 +25,8 @@ function App() {
         <Route
           path="/movie"
           element={
-            
-              <Movie />
+
+            <Movie />
           }
         />
 
@@ -66,11 +69,28 @@ function App() {
         <Route
           path="/help"
           element={
-              <Help />
+            <Help />
           }
         />
 
-        
+        <Route
+          path="/admin/add-movie"
+          element={<AddMovie />}
+        />
+
+       
+
+        <Route
+          path="/admin/view-booking"
+          element={<ViewBooking />}
+        />
+
+        <Route
+          path="/admin/view-user"
+          element={<ViewUser />}
+        />
+
+
       </Routes>
     </BrowserRouter>
   )

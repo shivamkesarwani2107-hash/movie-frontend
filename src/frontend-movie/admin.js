@@ -1,97 +1,222 @@
+import Header from "./header";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+
 export default function Admin() {
-  return (
-    <div className="min-h-screen bg-gray-100">
-      
-      {/* Header */}
-      <div className="bg-red-500 text-white shadow-md">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold">🎬 Admin Dashboard</h1>
 
-          <button className="bg-white text-red-500 px-4 py-2 rounded-md font-semibold hover:bg-gray-100">
-            Logout
-          </button>
-        </div>
-      </div>
+    const navigate = useNavigate();
 
-      {/* Dashboard Cards */}
-      <div className="max-w-7xl mx-auto p-6">
+    const getMovies = async () => {
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/movie`
+        );
 
-        <h2 className="text-3xl font-bold mb-6">
-          Welcome Admin 👋
-        </h2>
+        if (!response.ok) {
+            throw new Error("Failed to fetch movies");
+        }
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        return response.json();
+    };
 
-          <div className="bg-white rounded-xl shadow-md p-6 text-center">
-            <h3 className="text-lg font-semibold text-gray-600">
-              Total Movies
-            </h3>
+    const {
+        data: movies = [],
+        isLoading,
+        error,
+    } = useQuery({
+        queryKey: ["movies"],
+        queryFn: getMovies,
+    });
 
-            <p className="text-4xl font-bold text-red-500 mt-3">
-              12
-            </p>
-          </div>
+    if (isLoading) {
+        return <h1 className="text-center mt-20">Loading...</h1>;
+    }
 
-          <div className="bg-white rounded-xl shadow-md p-6 text-center">
-            <h3 className="text-lg font-semibold text-gray-600">
-              Total Bookings
-            </h3>
+    if (error) {
+        return <h1 className="text-center mt-20">Something Went Wrong</h1>;
+    }
 
-            <p className="text-4xl font-bold text-green-500 mt-3">
-              185
-            </p>
-          </div>
+    
+    return (
+        <>
+            <Header />
 
-          <div className="bg-white rounded-xl shadow-md p-6 text-center">
-            <h3 className="text-lg font-semibold text-gray-600">
-              Total Users
-            </h3>
+            <div className="min-h-screen bg-gray-100 p-6">
 
-            <p className="text-4xl font-bold text-blue-500 mt-3">
-              78
-            </p>
-          </div>
+                <h1 className="text-4xl font-bold text-red-500 mb-8">
+                    🎬 Admin Dashboard
+                </h1>
 
-          <div className="bg-white rounded-xl shadow-md p-6 text-center">
-            <h3 className="text-lg font-semibold text-gray-600">
-              Revenue
-            </h3>
+                {/* Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-            <p className="text-4xl font-bold text-purple-500 mt-3">
-              ₹45,600
-            </p>
-          </div>
+                    <div 
+                    onClick={() => navigate("/admin/add-movie")}
+                    className="bg-white rounded-xl shadow-md p-6">
+                        <h2 className="text-gray-500">Total Movies</h2>
+                        <p className="text-4xl font-bold text-red-500 mt-3">
+                            {movies.length}
+                        </p>
+                    </div>
 
-        </div>
+                    <div 
+                    onClick={() => navigate("/admin/view-booking")}
+                    className="bg-white rounded-xl shadow-md p-6">
+                        <h2 className="text-gray-500"
+                         onClick={() => navigate("/admin/view-booking")}
+                        >
+                            Bookings
+                            </h2>
+                        <p className="text-4xl font-bold text-green-500 mt-3">
+                           10
+                        </p>
+                    </div>
 
-        {/* Quick Actions */}
+                    <div 
+                     onClick={() => navigate("/admin/view-user")}
+                    className="bg-white rounded-xl shadow-md p-6">
+                        <h2 className="text-gray-500"
+                        >
+                            Users
+                            </h2>
+                        <p className="text-4xl font-bold text-blue-500 mt-3">78</p>
+                    </div>
 
-        <div className="bg-white mt-8 rounded-xl shadow-md p-6">
 
-          <h2 className="text-2xl font-bold mb-5">
-            Quick Actions
-          </h2>
 
-          <div className="flex flex-wrap gap-4">
+                </div>
 
-            <button className="bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-md">
-              ➕ Add Movie
-            </button>
+                {/* Quick Actions */}
+                <div className="bg-white rounded-xl shadow-md mt-8 p-6">
 
-            <button className="bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-md">
-              📋 View Bookings
-            </button>
+                    <h2 className="text-2xl font-bold mb-5">
+                        Quick Actions
+                    </h2>
 
-            <button className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-3 rounded-md">
-              👥 View Users
-            </button>
+                    <div className="flex flex-wrap gap-4">
 
-          </div>
+                        <button
+                            className="bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-lg"
+                            onClick={() => navigate("/admin/add-movie")}
+                        >
+                            ➕ Add Movie
+                        </button>
 
-        </div>
+                        <button
+                            className="bg-purple-500 hover:bg-purple-600 text-white px-5 py-3 rounded-lg"
+                            onClick={() => navigate("/admin/view-booking")}
+                        >
+                            🎟 View Bookings
+                        </button>
 
-      </div>
+                        <button
+                            className="bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-lg"
+                            onClick={() => navigate("/admin/view-user")}
+                        >
+                            👥 View Users
+                        </button>
 
-    </div>
-  );
+
+                    </div>
+
+                </div>
+
+                {/* Movies Table */}
+                <div className="bg-white rounded-xl shadow-md mt-8 p-6">
+
+                    <div className="flex justify-between items-center mb-5">
+
+                        <h2 className="text-2xl font-bold">
+                            Movies
+                        </h2>
+
+                        <button className="bg-red-500 text-white px-4 py-2 rounded-md"
+                            onClick={() => navigate("/admin/add-movie")}
+                        >
+                            Add Movie
+                        </button>
+
+                    </div>
+
+                    <table className="w-full border-collapse">
+
+                        <thead>
+
+                            <tr className="bg-gray-200">
+
+                                <th className="p-3 border">Movie</th>
+                                <th className="p-3 border">Language</th>
+                                <th className="p-3 border">Price</th>
+                                <th className="p-3 border">Duration</th>
+                                <th className="p-3 border">Action</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {movies.map((movie) => (
+
+                                <tr
+                                    key={movie._id}
+                                    className="text-center"
+                                >
+
+                                    <td className="border p-3">
+
+                                        <div className="flex items-center gap-3">
+
+                                            <img
+                                                src={movie.image}
+                                                alt={movie.name}
+                                                className="w-16 h-20 rounded object-cover"
+                                            />
+
+                                            <span>{movie.name}</span>
+
+                                        </div>
+
+                                    </td>
+
+                                    <td className="border p-3">
+                                        {movie.language}
+                                    </td>
+
+                                    <td className="border p-3">
+                                        ₹{movie.price}
+                                    </td>
+
+                                    <td className="border p-3">
+                                        {movie.duration}
+                                    </td>
+
+                                    <td className="border p-3">
+
+                                        <button
+                                            className="bg-yellow-500 text-white px-3 py-1 rounded mr-2"
+                                        >
+                                            Edit
+                                        </button>
+
+                                        <button
+                                            className="bg-red-500 text-white px-3 py-1 rounded"
+                                        >
+                                            Delete
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+                            ))}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </>
+    );
 }
