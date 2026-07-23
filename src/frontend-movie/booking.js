@@ -16,7 +16,12 @@ export default function Booking() {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
   const today = new Date().toISOString().split("T")[0];
+
+  const maxDate = new Date();
+  maxDate.setMonth(maxDate.getMonth() + 1);
+  const oneMonthLater = maxDate.toISOString().split("T")[0];
 
   const handleBooking = async () => {
 
@@ -55,16 +60,6 @@ export default function Booking() {
       if (response.ok) {
 
         localStorage.setItem("booking", JSON.stringify(data.booking));
-
-        const movieResponse = await fetch(`${process.env.REACT_APP_API_URL}/movie`);
-        const movieData = await movieResponse.json();
-
-        const foundMovie = movieData.find(
-          (m) => m.name === movieName
-        );
-
-        setSelectedMovie(foundMovie);
-
         setMovieName("");
         setTheatre("");
         setDate("");
@@ -200,7 +195,19 @@ export default function Booking() {
                 type="date"
                 value={date}
                 min={today}
-                onChange={(e) => setDate(e.target.value)}
+                max={oneMonthLater}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  if (value < today || value > oneMonthLater) {
+                    alert("Please select a valid date.");
+                    return;
+                  }
+
+                  setDate(value);
+                }}
+                onKeyDown={(e) => e.preventDefault()}
+                onPaste={(e) => e.preventDefault()}  
                 className="w-full border rounded-md p-3 mt-2 mb-4 outline-none"
               />
             </div>
@@ -276,10 +283,10 @@ export default function Booking() {
             disabled={loading || availableSeats === null || availableSeats === 0}
             onClick={handleBooking}
             className={`w-full mt-6 py-3 rounded-md text-white flex items-center justify-center gap-2 ${loading
-                ? "bg-red-500 cursor-wait"
-                : availableSeats === null || availableSeats === 0
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-red-500 hover:bg-red-600"
+              ? "bg-red-500 cursor-wait"
+              : availableSeats === null || availableSeats === 0
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-red-500 hover:bg-red-600"
               }`}
           >
             {loading ? (

@@ -7,8 +7,8 @@ export default function Help() {
 
             <div className="min-h-screen bg-gray-100 py-10">
 
-                <h1 className="text-4xl mt-4 font-bold text-center text-red-500 mb-8">
-                    🆘 Help & Support
+                <h1 className="text-4xl mt-4 font-bold text-center underline text-red-500 mb-8">
+                     Help & Support
                 </h1>
 
                 <div className="max-w-4xl mx-auto space-y-6">

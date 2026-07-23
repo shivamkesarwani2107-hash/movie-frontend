@@ -8,6 +8,7 @@ import Help from "./frontend-movie/help.js";
 import Ticket from "./frontend-movie/ticket.js";
 import Payment from "./frontend-movie/payment.js";
 import Profile from "./frontend-movie/profile.js";
+import Admin from "./frontend-movie/admin.js";
 import ProtectedRoute from "./frontend-movie/ProtectedRoute";
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/admin" element={<Admin />} />
 
         <Route
           path="/movie"

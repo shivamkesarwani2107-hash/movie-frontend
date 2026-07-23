@@ -94,13 +94,13 @@ export default function Payment() {
 
                 <div className="bg-white w-[420px] p-6 rounded-lg shadow-lg">
 
-                    <h1 className="text-2xl font-bold text-center text-green-600 mb-6">
-                        ₹ Payment
+                    <h1 className="text-2xl underline font-bold text-center text-green-600 mb-6">
+                         Payment
                     </h1>
 
                     <input
                         type="text"
-                        placeholder="shivam@paytm"
+                        placeholder="user@paytm"
                         className="w-full border rounded-md p-3 mt-2 mb-5 outline-none"
                     />
 
@@ -126,7 +126,7 @@ export default function Payment() {
                         <div className="flex justify-between font-bold text-lg">
                             <span>Total</span>
                             <span className="text-red-500">
-                                ₹{booking?.price ? booking.price * booking.seats : "Loading..."}
+                                00  
                             </span>
                         </div>
 
