@@ -126,7 +126,7 @@ export default function Payment() {
                         <div className="flex justify-between font-bold text-lg">
                             <span>Total</span>
                             <span className="text-red-500">
-                                00  
+                                 ₹{booking?.amount}
                             </span>
                         </div>
 
